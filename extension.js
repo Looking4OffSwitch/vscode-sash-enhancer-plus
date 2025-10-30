@@ -13,8 +13,10 @@ function cssForSash(color, thickness) {
   return `
 /* Sash Enhancer+ v0.6.0 — Editor-scoped, horizontal-only */
 
-/* Target ALL horizontal sashes in the workbench */
-.monaco-workbench .monaco-sash.horizontal {
+/* ONLY target horizontal sashes within editor and panel content areas */
+/* Avoid targeting root-level grid sashes */
+.monaco-workbench .part.editor .content .monaco-sash.horizontal,
+.monaco-workbench .part.panel .content .monaco-sash.horizontal {
   background-color: ${color} !important;
   height: ${thickness}px !important;
   min-height: ${thickness}px !important;
@@ -23,11 +25,9 @@ function cssForSash(color, thickness) {
   transition: none !important;
 }
 
-/* Ensure the hover state is also always visible */
-.monaco-workbench .monaco-sash.horizontal:hover {
+.monaco-workbench .part.editor .content .monaco-sash.horizontal:hover,
+.monaco-workbench .part.panel .content .monaco-sash.horizontal:hover {
   background-color: ${color} !important;
-  height: ${thickness}px !important;
-  min-height: ${thickness}px !important;
   opacity: 1 !important;
 }
 

@@ -1,87 +1,158 @@
 # 🧩 Sash Enhancer+ v0.6.0
 **Editor‑scoped, always‑visible horizontal sash — no theme token hacks, no UI chrome changes.**
 
-This extension makes the **horizontal divider between the editor and the panel/terminal** permanently visible and thicker, without changing anything else in VS Code.
+This extension makes the **horizontal divider between the editor and the panel/terminal** permanently visible and thicker, making it easier to find and resize panels in VS Code.
 
 ---
 
-## ✅ What This Does (and Doesn’t)
-- ✅ Styles **only the horizontal sash** inside the **editor** area
-- ✅ Leaves icons, sidebars, menus, settings, and other UI chrome untouched
+## ✅ What This Does (and Doesn't)
+- ✅ Styles **only horizontal sashes** in the editor and panel areas
+- ✅ Makes the editor-to-panel divider always visible (not just on hover)
+- ✅ Styles terminal split dividers for easier resizing
+- ✅ Leaves window chrome, sidebars, menus, and settings untouched
 - ✅ Does **not** change `workbench.colorCustomizations` or theme tokens
 - ✅ Updates only `workbench.sash.size` (for a larger hit area)
 - ❌ Does not style vertical sashes
-- ❌ Does not inject global CSS variables or borders
+- ❌ Does not style top/bottom window edge sashes
 
 ---
 
-## 🔧 Step‑by‑Step Setup (Do **every** step in order)
-1) **Install** the “Custom CSS and JS Loader” extension from the Marketplace.  
+## 🔧 Installation & Setup
+
+### Option 1: Install Pre-built Extension (Recommended)
+
+1. **Install the "Custom CSS and JS Loader" extension** from the Marketplace
+   - Open Extensions (`Cmd+Shift+X` or `Ctrl+Shift+X`)
    - Search for: `be5invis.vscode-custom-css`
+   - Click Install
 
-2) **Install Sash Enhancer+** (this extension).  
-   - If installing from VSIX: Extensions → “Install from VSIX…”
+2. **Install Sash Enhancer+**
+   - Download the `.vsix` file from [Releases](https://github.com/Looking4OffSwitch/vscode-sash-enhancer-plus/releases)
+   - In VS Code: `Extensions → ... → Install from VSIX...`
+   - Select the downloaded `.vsix` file
 
-3) **Toggle Always‑Visible Mode**:  
-   - Command Palette → `Sash Enhancer: Toggle Always-Visible Mode`  
-   This writes an editor‑scoped CSS file and adds it to the loader’s imports.
+3. **Activate the extension**
+   - Open Command Palette (`Cmd+Shift+P` or `Ctrl+Shift+P`)
+   - Run: `Sash Enhancer: Toggle Always-Visible Mode`
+   - This writes the CSS file and registers it with the Custom CSS Loader
 
-4) **Enable the loader**:  
-   - Command Palette → `Custom CSS and JS: Enable`  
-   - Then run: `Developer: Reload Window`
+4. **Enable Custom CSS**
+   - Command Palette → `Custom CSS and JS: Enable`
+   - When prompted, click "Reload Window" (or run `Developer: Reload Window`)
+   - Note: You may see a "VS Code is corrupted" warning - this is expected and harmless. Click the gear icon to dismiss it permanently.
 
-5) **Verify**:  
-   - Command Palette → `Sash Enhancer: Verify Configuration`  
-   - In the Output panel, ensure “imports contains css: true”.  
-   - You should now see a thicker, colored **horizontal divider** between editor and terminal. No vertical lines should be colored.
+5. **Verify it's working**
+   - Command Palette → `Sash Enhancer: Verify Configuration`
+   - Check the Output panel for "imports contains css: true"
+   - You should now see a thick, colored horizontal divider between editor and terminal
+
+### Option 2: Build from Source
+
+If you want to build the extension yourself or contribute to development:
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Looking4OffSwitch/vscode-sash-enhancer-plus.git
+   cd vscode-sash-enhancer-plus
+   ```
+
+2. **Build the extension**
+   ```bash
+   ./build.sh
+   ```
+   This runs `npm install` and packages the extension into a `.vsix` file.
+
+3. **Install the built extension**
+   - Follow steps 1-5 from "Option 1" above
+   - Use the newly generated `.vsix` file in the project root
 
 ---
 
 ## ⚙️ Settings
+
+Configure the extension in your VS Code settings:
+
 ```json
-"sashEnhancer.thickness": 8,   // height in pixels
-"sashEnhancer.color": "#ff0066",
-"sashEnhancer.injectCSS": true
+{
+  "sashEnhancer.thickness": 8,        // Sash height in pixels (1-24)
+  "sashEnhancer.color": "#ff0066",    // CSS color value
+  "sashEnhancer.injectCSS": true      // Enable/disable CSS injection
+}
 ```
-> Tip: Change color/thickness, run `Toggle Always-Visible Mode` again, then `Custom CSS and JS: Enable` → Reload.
+
+**To apply changes after modifying settings:**
+1. Command Palette → `Sash Enhancer: Toggle Always-Visible Mode`
+2. Command Palette → `Custom CSS and JS: Enable`
+3. Reload Window
 
 ---
 
-## 🧹 Reset to Defaults (no manual edits needed)
-If you want to remove everything this extension touched:
-- Command Palette → **`Sash Enhancer: Reset Settings to Defaults`**
-  - Removes: `sashEnhancer.*` settings
-  - Resets: `workbench.sash.size`
-  - Removes our CSS from `vscode_custom_css.imports`
+## 🧹 Uninstalling / Reset
 
-After running the command, **Reload Window**.
+To completely remove all extension changes:
+
+1. Command Palette → `Sash Enhancer: Reset Settings to Defaults`
+   - This removes all `sashEnhancer.*` settings
+   - Resets `workbench.sash.size` to default
+   - Removes CSS file from Custom CSS Loader imports
+
+2. Reload Window to apply changes
+
+3. (Optional) Uninstall the extension from Extensions panel
 
 ---
 
-## 🛠 Troubleshooting (in order)
-1) **No change?**  
-   - Run `Sash Enhancer: Verify Configuration` → check “imports contains css: true”.  
-   - If `false`, run `Toggle Always-Visible Mode`, then `Custom CSS and JS: Enable` → Reload.
+## 🛠 Troubleshooting
 
-2) **Vertical lines still colored?**  
-   - You likely have leftover theme overrides. Open **Settings (JSON)** and remove any of:  
-     ```json
-     "workbench.colorCustomizations": {
-       "sash.hoverBorder": "...",
-       "sash.border": "...",
-       "contrastBorder": "...",
-       "panel.border": "...",
-       "editorGroup.border": "..."
-     }
-     ```
-   - Or run: `Sash Enhancer: Reset Settings to Defaults`
+### Sashes aren't visible after installation
 
-3) **“Corrupt installation” warning after reload**  
-   - This is expected with Custom CSS Loader. It’s harmless; VS Code flags runtime patching. You can ignore it.
+1. Run `Sash Enhancer: Verify Configuration` (Command Palette)
+2. Check the Output panel for "imports contains css: true"
+3. If `false`:
+   - Run `Sash Enhancer: Toggle Always-Visible Mode`
+   - Run `Custom CSS and JS: Enable`
+   - Reload Window
 
-4) **Still stuck? Inspect the exact element**  
-   - Run: `Developer: Toggle Developer Tools` → use the element picker → hover the line that’s red → copy the computed style + selector.  
-   - Share that selector; only a scoped rule inside `.monaco-workbench .editor` is needed.
+### "VS Code is corrupted" warning appears
+
+This is expected when using Custom CSS Loader. VS Code detects that the runtime has been modified and shows this warning.
+
+**How to dismiss:**
+- Click the gear icon in the warning notification
+- Select "Don't Show Again"
+
+The warning is harmless - your VS Code installation is not actually corrupted.
+
+### Vertical sashes are styled (shouldn't be)
+
+You may have leftover theme customizations. Check Settings (JSON) for:
+
+```json
+"workbench.colorCustomizations": {
+  "sash.hoverBorder": "...",
+  "sash.border": "...",
+  "contrastBorder": "...",
+  "panel.border": "...",
+  "editorGroup.border": "..."
+}
+```
+
+Remove these entries or run `Sash Enhancer: Reset Settings to Defaults`.
+
+### Settings changes don't apply
+
+After modifying `sashEnhancer.*` settings, you must:
+1. Run `Sash Enhancer: Toggle Always-Visible Mode`
+2. Run `Custom CSS and JS: Enable`
+3. Reload Window
+
+### Need to debug CSS selectors?
+
+1. Run `Developer: Toggle Developer Tools`
+2. Use the element picker (top-left icon)
+3. Hover over the sash you want to inspect
+4. Copy the computed styles and selectors
+5. Open an issue on GitHub with this information
 
 ---
 
