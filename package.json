@@ -1,0 +1,64 @@
+{
+  "name": "sash-enhancer-plus",
+  "displayName": "Sash Enhancer+",
+  "description": "Editor-scoped, always-visible horizontal sash for VS Code. No theme token hacks. No UI chrome changes.",
+  "version": "0.6.0",
+  "publisher": "local",
+  "repository": {
+    "type": "git",
+    "url": "https://example.com/sash-enhancer"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "dependencies": {},
+  "contributes": {
+    "configuration": {
+      "title": "Sash Enhancer+",
+      "properties": {
+        "sashEnhancer.thickness": {
+          "type": "number",
+          "default": 8,
+          "minimum": 1,
+          "maximum": 24,
+          "description": "Horizontal sash thickness (height in px). Also updates workbench.sash.size to match for better hit area."
+        },
+        "sashEnhancer.color": {
+          "type": "string",
+          "default": "#ff0066",
+          "description": "Horizontal sash color (CSS color)."
+        },
+        "sashEnhancer.injectCSS": {
+          "type": "boolean",
+          "default": true,
+          "description": "Write editor-scoped CSS and add it to Custom CSS Loader imports. Requires running \u201cCustom CSS and JS: Enable\u201d once."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "sashEnhancer.toggleCSSMode",
+        "title": "Sash Enhancer: Toggle Always-Visible Mode"
+      },
+      {
+        "command": "sashEnhancer.openCSSFile",
+        "title": "Sash Enhancer: Open Injected CSS File"
+      },
+      {
+        "command": "sashEnhancer.verifyConfig",
+        "title": "Sash Enhancer: Verify Configuration"
+      },
+      {
+        "command": "sashEnhancer.resetSettings",
+        "title": "Sash Enhancer: Reset Settings to Defaults"
+      }
+    ]
+  }
+}
